@@ -1,8 +1,10 @@
-.country{ fill: rgb(100, 75, 151); }
+.country{ 
+    fill: rgb(10, 75, 101);
+}
 
 .country:hover{
     stroke: #fff;
-    stroke-width: .2px;
+    stroke-width: .3px;
     cursor:pointer;
 
 }
