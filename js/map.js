@@ -9,12 +9,6 @@ function map(){
     var zoom = d3.behavior.zoom()
 
     .on("zoom", move);
-
-    //var c20 = d3.scale.category20();
-    // var color = d3.scaleThreshold()
-    //     .domain([1,10])
-    //     .range(d3.schemeBlues[9]);
-    
     // check
     var projection = d3.geo.mercator()
     .scale(1300)
@@ -41,12 +35,9 @@ function map(){
 
         var mun = topojson.feature(sweden, sweden.objects.swe_mun).features;
 
-        //mun.results = [1];
-
         // save all names from jsonmap
         for(var i = 0; i < mun.length; i++){
             regionNames[i] = mun[i].properties.name;
-            //console.log(regionNames[i]);
         };
 
         d3.csv("data/Swedish_Election_2014.csv", function(data) {
@@ -62,8 +53,7 @@ function map(){
     function draw(mun,data)
     {
         var country = g.selectAll(".country").data(mun);
-        //initialize a color country object 
-        var cc = {};
+        
         var regionResult = [];
         var sortedResults = [];
 
@@ -87,26 +77,17 @@ function map(){
 
                     resultat[counter] = data[j]["Year=2014"];
                     counter++;
-                    //console.log(regionNames[i] + " " + resultat);
-                    //Array.prototype.push.apply(mun[i].properties.result, resultat);
-                    //mun[i].results = resultat;
 
                 }
                 else{
-                     mun[i].results = resultat;
-                     //console.log(mun[i].results.length);
-                }
+                   mun[i].results = resultat;
+                 }
 
-                // if(resultat.length = 0 && counter = 8){
-                //     console.log(hej);
-                // }
-        
-            }     
-            //console.log(resultat.length);
+            }
 
             counter = 0;
             resultat = [];
-                                
+
         }
 
     // decide color for each region depending on political stance
@@ -119,26 +100,24 @@ function map(){
         + parseFloat(local[2])+ parseFloat(local[3]);
 
         var red = parseFloat(local[4]) + parseFloat(local[5]) + parseFloat(local[6]);
-        //console.log(blue + "  " + red + "  " + local);
+        console.log(blue + "  " + red + "  " + local);
 
         if(red > blue){
-
             constant = 0.5 - 0.5*(red/100);
-
         }
         else{
-            constant = 0.5 + 0.5*(red/100);
+            constant = 0.5 + 0.5*(blue/100);
         } 
 
         mun[i].color = d3.interpolateRdBu(constant);
 
     }
 
-        country.enter().insert("path")
-        .attr("class", "country")
-        .attr("d", path)
-        .attr("id", function(d) { return d.id; })
-        .attr("title", function(d) { return d.properties.name; })
+    country.enter().insert("path")
+    .attr("class", "country")
+    .attr("d", path)
+    .attr("id", function(d) { return d.id; })
+    .attr("title", function(d) { return d.properties.name; })
             //country color
             .style("fill", function(d) { return d.color; })
             
@@ -151,7 +130,8 @@ function map(){
             })
             //selection
             .on("click",  function(d) {
-                console.log(d);
+              console.log(d.results + "  d");
+                bar.yolo(d);
             });
 
         }
